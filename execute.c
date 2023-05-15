@@ -34,22 +34,21 @@ char *check_operator(Node **head)
 */
 void command_alloc(Node **head)
 {
-	int status = 0;
 
 	char *operator = check_operator(head);
 	
 	if (operator == NULL)
 	{
-		execute(head, status);
+		execute(head);
 	} else if (strcmp(operator, ";") == 0)
 	{
-		_command_separator(head, status);
+		_command_separator(head);
 	} else if (strcmp(operator, "||") == 0)
 	{
-		printf("caliing or\n");
+		_or(head);
 	} else if (strcmp(operator, "&&") == 0)
 	{
-		printf("calling and\n");
+		_and(head);
 	}
 
 }
@@ -60,7 +59,7 @@ void command_alloc(Node **head)
 * @status: exit status of the previous program
 * Return: nothing
 */
-void execute(Node **head, int status)
+void execute(Node **head)
 {
 
 	char *commands[10];
@@ -76,7 +75,7 @@ void execute(Node **head, int status)
 	commands[i] = NULL;
 	i = 0;
 	
-	myexecve(commands, status);
+	myexecve(commands);
 }
 
 /**
@@ -84,7 +83,7 @@ void execute(Node **head, int status)
 * @head: pointer to head of linked list
 * @status: exit status of previous process
 */
-void _command_separator(Node **head, int status)
+void _command_separator(Node **head)
 {
 	Node *temp = *head;
 	char *commands[10] = {NULL};
@@ -97,7 +96,7 @@ void _command_separator(Node **head, int status)
 		{
 			if (commands[0] != NULL)
 			{
-				myexecve(commands, status);
+				myexecve(commands);
 			}
 
 			i = 0;
@@ -111,7 +110,7 @@ void _command_separator(Node **head, int status)
 	
 	if (commands[0] != NULL)
 	{
-		myexecve(commands, status);
+		myexecve(commands);
 	}
 }
 /**

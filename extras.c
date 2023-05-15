@@ -3,13 +3,14 @@
 /**
 * myexecve - executes commands
 * @commands: array of commands
-* Return: nothing
+* Return: exit status of execve
 */
-void myexecve(char *commands[], int status)
+int myexecve(char *commands[])
 {
 	char str[100];
 	pid_t pid;
 	int i = 0;
+	int status = 0;
 	
 	if (commands[0][0] == '/')
 	{
@@ -39,6 +40,7 @@ void myexecve(char *commands[], int status)
 		free(commands[i]);
 		commands[i] = NULL;
 	}
+	return (status);
 }
 
 /**
@@ -57,6 +59,9 @@ void _parser(Node **head)
 	} else if (strcmp((*head)->cmd, "cd") == 0)
 	{
 		mycd(head);
+	} else if (strcmp((*head)->cmd, "setenv") == 0 || strcmp((*head)->cmd, "unsetenv") == 0)
+	{
+		myenv(head);
 	} else
 	{
 		command_alloc(head);

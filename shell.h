@@ -23,8 +23,8 @@ void _interactive(Node **head, char **buffer, char **token, size_t *no_read, siz
 void _non_interactive(Node **head, char **buffer, char **token, size_t *no_read, size_t *chars);
 char *check_operator(Node **head);
 void command_alloc(Node **head);
-void execute(Node **head, int status);
-void _command_separator(Node **head, int status);
+void execute(Node **head);
+void _command_separator(Node **head);
 void myexit(Node **head);
 void myenv(Node **head);
 int _unsetenv(char *name);
@@ -32,10 +32,12 @@ char *_getenv(char *name);
 int _setenv(char *name, char *value, int overwrite);
 void mycd(Node **head);
 void print_env(void);
-void myexecve(char *commands[], int status);
+int myexecve(char *commands[]);
 void _parser(Node **head);
 void _mycd(char *temp[], int i, char **current_wd, char **current_dir, size_t dir_len);
 void free_head(Node **head);
 void _whitespace(char **buffer);
+void _or(Node **head);
+void _and(Node **head);
 
 #endif
