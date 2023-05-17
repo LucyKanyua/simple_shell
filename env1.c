@@ -78,3 +78,5 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 	 *(envp + 1) = NULL;
 	return (0);
 }
+
+

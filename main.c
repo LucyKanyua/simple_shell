@@ -1,5 +1,7 @@
 #include "shell.h"
 
+char *myprogram_name;
+
 /**
 * append - appends a struct to a linked list
 * @head: pointer to a linked list
@@ -144,7 +146,7 @@ void _non_interactive(Node **head, char **buffer, char **token, size_t *no_read,
 {
 	size_t n = -1;
 	int status = 0;
-	pid_t pid = getpid();
+	pid_t pid ;
 	
 	/*reads characters of size chars from stdin till '\n' is encountered and stores them in buffer*/
 	while (((*no_read) = getline(buffer, chars, stdin)) != n)
@@ -204,6 +206,8 @@ int main(int ac, char *av[])
 	char *buffer = NULL;
 	char *token = NULL;
 	Node *head = NULL;
+	
+	
 	
 	/*checks if the program was run with one argument and handles second argument approprietly*/
 	if (ac == 2)

@@ -29,7 +29,8 @@ int myexecve(char *commands[], pid_t *pid)
 	/*checks if creating child process failed*/
 	if (*pid == -1)
 	{
-		perror("Error forking\n");
+		perror(myprogram_name);
+		write(STDOUT_FILENO, "fork\n", 5);
 	}
 	/*checks if child process was successfuly created and calls execve() */
 	else if (*pid == 0)
@@ -37,8 +38,7 @@ int myexecve(char *commands[], pid_t *pid)
 		/*executes commands in commands[] with str as path and exits if execution is not success */
 		if (execve(str, commands, environ) == -1)
 		{
-			perror("./shell");
-			exit(EXIT_FAILURE);
+			perror(myprogram_name);
 		}
 	} 
 	/*parent process saves exit status of child process with PID pid to status */
@@ -169,8 +169,8 @@ void _mycd(char *temp[], int i, char **current_wd, char **current_dir, size_t di
 		}
 		else
 		{
-			perror("./shell");
-			exit(EXIT_FAILURE);
+			perror(myprogram_name);
+			write(STDOUT_FILENO, "cd", 2);
 		}
 	}
 }

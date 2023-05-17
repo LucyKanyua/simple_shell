@@ -25,10 +25,14 @@ void myenv(Node **head)
 	{
 		/*checks if items in temp[] are not 3*/
 		if (i != 3)
-			perror("./shell");
+			write(STDOUT_FILENO, "./hsh : setenv : invalid number of arguments", 44);
 		/*if items are 3 _setenv() is called to set environment*/
 		else
-			setenv(temp[1], temp[2], 0);
+		{
+			if (setenv(temp[1], temp[2], 1) != 0)
+				write(STDOUT_FILENO, "./hsh : setenv : failed", 22);
+				
+		}
 
 	} 
 	/*checks if first item in temp[] is "unsetenv"*/
@@ -36,10 +40,19 @@ void myenv(Node **head)
 	{
 		/*checks if items in temp[] are not 2*/
 		if (i != 2)
-			perror("./shell");
+			write(STDOUT_FILENO, "./hsh : unsetenv : invalid number of arguments", 46);
 		/*if items are 2 _unsetenv() is called to unset environment*/
 		else
-			unsetenv(temp[1]);
+			if (unsetenv(temp[1]) != 0)
+				write(STDOUT_FILENO, "./hsh : usetenv : failed", 24);
+	}
+	/*free temp[]*/
+	i = 0;
+	while (temp[i] != NULL)
+	{
+		free(temp[i]);
+		temp[i] = NULL;
+		i++;
 	}
 }
 
