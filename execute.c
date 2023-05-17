@@ -38,9 +38,11 @@ char *check_operator(Node **head)
 /**
 * command_alloc - allocates commands to helper functions
 * @head: pointer to head of a linked list
+* @count: number of executions
+* @program_name: program_name
 * Return: nothing
 */
-void command_alloc(Node **head, int *status, pid_t *pid)
+void command_alloc(Node **head, int *status, int *count, char **program_name)
 {
 	/*assigns result of check_operator() to operator */
 	char *operator = check_operator(head);
@@ -49,23 +51,23 @@ void command_alloc(Node **head, int *status, pid_t *pid)
 	/*operator is null default execute() is called*/
 	if (operator == NULL)
 	{
-		execute(head, status, pid);
+		execute(head, status, count, program_name);
 
 	}
 	/*if operator is ';' _command_separator() is called to take care of the command */ 
 	else if (strcmp(operator, ";") == 0)
 	{
-		_command_separator(head, status, pid);
+		_command_separator(head, status, count, program_name);
 	}
 	/*if operator is "||" _or() is called to take care of the command*/ 
 	else if (strcmp(operator, "||") == 0)
 	{
-		_or(head, status, pid);
+		_or(head, status, count, program_name);
 	}
 	/*if operator is "&&" _and() is called to take care of the command*/  
 	else if (strcmp(operator, "&&") == 0)
 	{
-		_and(head, status, pid);
+		_and(head, status, count, program_name);
 	}
 
 }
@@ -74,9 +76,11 @@ void command_alloc(Node **head, int *status, pid_t *pid)
 * execute - executes command
 * @head: pointer to head of a linked list
 * @status: exit status of the previous program
+* @count: number of executions
+* @program_name: program_name
 * Return: nothing
 */
-void execute(Node **head, int *status, pid_t *pid)
+void execute(Node **head, int *status, int *count, char **program_name)
 {
 
 	char *commands[10];
@@ -97,15 +101,18 @@ void execute(Node **head, int *status, pid_t *pid)
 	i = 0;
 	
 	/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-	*status = myexecve(commands, pid);
+	*status = myexecve(commands, count, program_name);
 }
 
 /**
 * _command_separator - executes commands with command separator ';'
 * @head: pointer to head of linked list
 * @status: exit status of previous process
+* @count: number of executions
+* @program_name: program_name
+* Return: void
 */
-void _command_separator(Node **head, int *status, pid_t *pid)
+void _command_separator(Node **head, int *status, int *count, char **program_name)
 {
 	Node *temp = *head;
 	char *commands[10] = {NULL};
@@ -121,7 +128,7 @@ void _command_separator(Node **head, int *status, pid_t *pid)
 			if (commands[0] != NULL)
 			{
 				/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-				*status = myexecve(commands, pid);
+				*status = myexecve(commands, count, program_name);
 			}
 
 			i = 0;
@@ -140,7 +147,7 @@ void _command_separator(Node **head, int *status, pid_t *pid)
 	if (commands[0] != NULL)
 	{
 		/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-		*status = myexecve(commands, pid);
+		*status = myexecve(commands, count, program_name);
 	}
 }
 /**

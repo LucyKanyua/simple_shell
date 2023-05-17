@@ -1,12 +1,20 @@
 #include "shell.h"
 
-void execute_file(Node **head, int fd)
+/**
+* execute_file - executes commands in fd
+* @head: pointer to linked list
+* @fd: fd
+* @program_name: program_name
+* Return: void
+*/
+
+void execute_file(Node **head, int fd, char **program_name)
 {
 	char *line, *token, *temp;
 	ssize_t num_read;
 	char *tokens[100];
 	int status = 0, i = 0, j= 0;
-	pid_t pid = getpid();
+	int count = 1;
 	/*allocates mamory for buff*/
 	char *buff = malloc(sizeof(char) * 1024);
 	
@@ -20,6 +28,7 @@ void execute_file(Node **head, int fd)
 	/*while reading from fd is successful*/
 	while ((num_read = read(fd, buff, 1024)) > 0)
 	{
+	
 		/*terminate content read with null character*/
 		buff[num_read] = '\0';
 		
@@ -59,11 +68,12 @@ void execute_file(Node **head, int fd)
 				temp = NULL;
 			}
 			/*call _parse() to take care of commands in the linked list*/
-			_parser(head, &status, &pid);
+			_parser(head, &status, &count, program_name);
 			/*free linked list*/
 			free_head(head);
 			/*increment j to advance to the next line in tokens[] during next iteration*/
 			j++;
+			count++;
 		}
 	}
 	/*free tokens[]*/
@@ -85,10 +95,12 @@ void execute_file(Node **head, int fd)
 
 /**
 * _file - handles file command line argument
+* @head: pointer to head of linked list
 * @filename: filename
+* @ @program_name: program_name
 * Return: nothing
 */
-void _file(Node **head, char *filename)
+void _file(Node **head, char *filename, char **program_name)
 {
 	int fd;
 
@@ -110,7 +122,7 @@ void _file(Node **head, char *filename)
 	/*call execure_file to operate on contents of the file and break the loop on its return*/
 	while (1)
 	{
-		execute_file(head, fd);
+		execute_file(head, fd, program_name);
 		break;
 	}
 	/*checks if file is closed successfullly*/

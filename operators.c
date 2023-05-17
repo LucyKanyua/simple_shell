@@ -3,9 +3,11 @@
 /**
 * _or - handles logical operator OR
 * @head: pointer to head of a linked list
+* @count: number of executions
+* @program_name: program_name
 * Return: void
 */
-void _or(Node **head, int *status, pid_t *pid)
+void _or(Node **head, int *status, int *count, char **program_name)
 {
 	/*creates ref to the head of linked list*/
 	Node *list = *head;
@@ -31,7 +33,7 @@ void _or(Node **head, int *status, pid_t *pid)
 			if (*status != 0)
 			{
 				/*executes commands in temp assigning its exit status to status*/
-				*status = myexecve(temp, pid);
+				*status = myexecve(temp, count, program_name);
 				
 				/*frees each item in temp[] which is not null and sets it to null*/
 				for (j = 0; j < i; j++)
@@ -65,9 +67,11 @@ void _or(Node **head, int *status, pid_t *pid)
 /**
 * _and - handles logical operator AND
 * @head: pointer to head of a linked list
+* @count: number of executions
+* @program_name: program_name
 * Return: void
 */
-void _and(Node **head, int *status, pid_t *pid)
+void _and(Node **head, int *status, int *count, char **program_name)
 {
 	/*creates ref to the head of linked list*/
 	Node *list = *head;
@@ -93,7 +97,7 @@ void _and(Node **head, int *status, pid_t *pid)
 			if (*status == 0)
 			{
 				/*executes commands in temp assigning its exit status to status*/
-				*status = myexecve(temp, pid);
+				*status = myexecve(temp, count, program_name);
 				
 				/*frees each item in temp[] which is not null and sets it to null*/
 				for (j = 0; j < i; j++)
@@ -129,6 +133,7 @@ void _and(Node **head, int *status, pid_t *pid)
 /**
 * var_replace - handles variable replacement
 * @head: pointer to head of linked list containing commands
+* @status: exit status of previous child process
 * Return: nothing
 */
 void var_replace(Node **head, int *status)
