@@ -37,11 +37,11 @@ char *_getenv(char *name)
  * @overwrite: overwrite
  * Return: int
  */
-int _setenv(char *name, char *value, int overwrite)
+int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 {
 	char **envp = environ;
 	int name_len = strlen(name);
-	char *env_var, *new_env_var;
+	char *env_var, *temp;
 	int value_len = strlen(value);
 
 	while (*envp != NULL)
@@ -53,28 +53,28 @@ int _setenv(char *name, char *value, int overwrite)
 			{
 				return (0);
 			}
-			new_env_var = (char *) malloc(name_len + value_len + 2);
-			strncpy(new_env_var, name, name_len);
-			new_env_var[name_len] = '=';
-			strncpy(&new_env_var[name_len + 1], value, value_len);
-			new_env_var[name_len + value_len + 1] = '\0';
-			*envp = new_env_var;
+			temp = (char *) malloc(name_len + value_len + 2);
+			if (!name)
+				return (-1);
+			name = temp;
+			name[name_len] = '=';
+			strncpy(&name[name_len + 1], value, value_len);
+			name[name_len + value_len + 1] = '\0';
+			*envp = name;
 			
-			free(new_env_var);
-			new_env_var = NULL;
 			return (0);
 		}
 		envp++;
 	}
-	new_env_var = (char *) malloc(name_len + value_len + 2);
-	strncpy(new_env_var, name, name_len);
-	new_env_var[name_len] = '=';
-	strncpy(&new_env_var[name_len + 1], value, value_len);
-	new_env_var[name_len + value_len + 1] = '\0';
-	 *envp = new_env_var;
+	temp = (char *) malloc(name_len + value_len + 2);
+	if (!name)
+		return (-1);
+		
+	name = temp;
+	name[name_len] = '=';
+	strncpy(&name[name_len + 1], value, value_len);
+	name[name_len + value_len + 1] = '\0';
+	 *envp = name;
 	 *(envp + 1) = NULL;
-	 free(new_env_var);
-	 new_env_var = NULL;
-
 	return (0);
 }
