@@ -14,17 +14,17 @@ char *check_operator(Node **head)
 	while (temp != NULL)
 	{
 		/*checks if ";" is present in the node and returns ";" */
-		if (strcmp(temp->cmd, ";") == 0)
+		if (_strcmp(temp->cmd, ";") == 0)
 		{
 			return(";");
 		}
 		/*checks if "||" is present in the node and returns "||" */
-		else if (strcmp(temp->cmd, "||") == 0)
+		else if (_strcmp(temp->cmd, "||") == 0)
 		{
 			return("||");
 		}
 		/*checks if "&&" is present in the node and returns "&&" */
-		else if (strcmp(temp->cmd, "&&") == 0)
+		else if (_strcmp(temp->cmd, "&&") == 0)
 		{
 			return("&&");
 		}
@@ -55,17 +55,17 @@ void command_alloc(Node **head, int *status, int *count, char **program_name)
 
 	}
 	/*if operator is ';' _command_separator() is called to take care of the command */ 
-	else if (strcmp(operator, ";") == 0)
+	else if (_strcmp(operator, ";") == 0)
 	{
 		_command_separator(head, status, count, program_name);
 	}
 	/*if operator is "||" _or() is called to take care of the command*/ 
-	else if (strcmp(operator, "||") == 0)
+	else if (_strcmp(operator, "||") == 0)
 	{
 		_or(head, status, count, program_name);
 	}
 	/*if operator is "&&" _and() is called to take care of the command*/  
-	else if (strcmp(operator, "&&") == 0)
+	else if (_strcmp(operator, "&&") == 0)
 	{
 		_and(head, status, count, program_name);
 	}
@@ -92,7 +92,7 @@ void execute(Node **head, int *status, int *count, char **program_name)
 	while (temp != NULL)
 	{
 		/*duplicates command in the current node to array commands*/
-		commands[i++] = strdup(temp->cmd);
+		commands[i++] = _strdup(temp->cmd);
 		/*assigns current to point to the next node*/
 		temp = temp->next;
 	}
@@ -122,7 +122,7 @@ void _command_separator(Node **head, int *status, int *count, char **program_nam
 	while (temp != NULL)
 	{
 		/*if current node has command of ';' commands in the array are executed*/
-		if (strcmp(temp->cmd, ";") == 0)
+		if (_strcmp(temp->cmd, ";") == 0)
 		{
 			/*checks if commands array is not empty*/
 			if (commands[0] != NULL)
@@ -137,7 +137,7 @@ void _command_separator(Node **head, int *status, int *count, char **program_nam
 		else
 		{
 			/*duplicated command in the current node to commands array*/
-			commands[i] = strdup(temp->cmd);
+			commands[i] = _strdup(temp->cmd);
 			i++;
 		}
 		/*assigns current node to point to next node*/
@@ -173,42 +173,14 @@ void myexit(Node **head)
 	else
 	{
 		/*copies command in status node to exit_status_str*/
-		strcpy(exit_status_str, status->cmd);
+		_strcpy(exit_status_str, status->cmd);
 		/*terminates exit_status_str with '\0'*/
-		exit_status_str[strlen(exit_status_str)] = '\0';
+		exit_status_str[_strlen(exit_status_str)] = '\0';
 		/*coverts exit_status_str to int*/
-		exit_status = atoi(exit_status_str);
+		exit_status = _atoi(exit_status_str);
 		/*free linked list*/
 		free_head(head);
 		/*exits with status stored in exit_status*/
 		exit(exit_status);
 	}
 }
-		
-	
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

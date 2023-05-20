@@ -40,7 +40,7 @@ void execute_file(Node **head, int fd, char **program_name)
 		while (line != NULL)
 		{
 			/*duplicates content of line to tokens[]*/
-			tokens[i++] = strdup(line);
+			tokens[i++] = _strdup(line);
 			line = strtok(NULL, "\n");
 		}
 		/*assigns last item of tokens[] to null*/
@@ -52,7 +52,7 @@ void execute_file(Node **head, int fd, char **program_name)
 		while (tokens[j] != NULL && j < i)
 		{
 			/*duplicates token at index j of tokens[] to temp*/
-			temp = strdup(tokens[j]);
+			temp = _strdup(tokens[j]);
 			/*tokenizes each token in temp using " " as delimiter*/
 			token = strtok(temp, " ");
 			while (token != NULL)
@@ -132,4 +132,3 @@ void _file(Node **head, char *filename, char **program_name)
 		exit(EXIT_FAILURE);
 	}
 }
-	

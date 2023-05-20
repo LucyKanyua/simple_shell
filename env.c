@@ -14,14 +14,14 @@ void myenv(Node **head)
 	/*iterates linked list adds commands in each node to temp[]*/
 	while (list != NULL)
 	{
-		temp[i++] = strdup(list->cmd);
+		temp[i++] = _strdup(list->cmd);
 		list = list->next;
 	}
 	/*sets last item of temp[] to null*/
 	temp[i] = NULL;
 	
 	/*checks if first item in temp[] is "setenv"*/
-	if (strcmp(temp[0], "setenv") == 0)
+	if (_strcmp(temp[0], "setenv") == 0)
 	{
 		/*checks if items in temp[] are not 3*/
 		if (i != 3)
@@ -36,7 +36,7 @@ void myenv(Node **head)
 
 	} 
 	/*checks if first item in temp[] is "unsetenv"*/
-	else if (strcmp(temp[0], "unsetenv") == 0)
+	else if (_strcmp(temp[0], "unsetenv") == 0)
 	{
 		/*checks if items in temp[] are not 2*/
 		if (i != 2)
@@ -66,14 +66,14 @@ void myenv(Node **head)
 int _unsetenv(char *name) /*has bugs*/
 {
 	char **envp = environ;
-	int name_len = strlen(name);
+	int name_len = _strlen(name);
 	char *env_var;
 
 	while (*envp != NULL)
 	{
 		env_var = *envp;
 
-		if (strncmp(env_var, name, name_len) == 0 && env_var[name_len] == '=')
+		if (_strncmp(env_var, name, name_len) == 0 && env_var[name_len] == '=')
 		{
 			char **next_env = envp + 1;
 
@@ -109,7 +109,7 @@ void mycd(Node **head)
 	while (list != NULL)
 	{
 		/*duplicates command in the current node to temp[] */
-		temp[i++] = strdup(list->cmd);
+		temp[i++] = _strdup(list->cmd);
 		/*current node points to next */
 		list = list->next;
 	}
@@ -154,7 +154,3 @@ void print_env(void)
 		env++;
 	}
 }
-
-
-
-

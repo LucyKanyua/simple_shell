@@ -20,7 +20,7 @@ void append(Node **head, char *cmd)
 		exit(EXIT_FAILURE);
 	}
 	/*duplicates string to Node*/
-	new_list->cmd = strdup(cmd);
+	new_list->cmd = _strdup(cmd);
 	/*makes Node to pint to NULL*/
 	new_list->next = NULL;
 	/*checks if head is pointing to NULL and makes it point to created Node*/
@@ -84,7 +84,7 @@ void _interactive(Node **head, char **buffer, char **token, size_t *no_read, siz
 	while(((*no_read) = getline(buffer, chars, stdin)) != n)
 	{
 		/*checks if whitespace is entered and prompts agin*/
-		if (strspn(*buffer, " \t\n\r") == strlen(*buffer))
+		if (_strspn(*buffer, " \t\n\r") == _strlen(*buffer))
 		{
 			write(STDOUT_FILENO, "$ ", 1+1);
 		}
@@ -93,10 +93,10 @@ void _interactive(Node **head, char **buffer, char **token, size_t *no_read, siz
 		{
 			
 			/*replaces "\n" in buffer with "\0"*/
-			(*buffer)[strcspn((*buffer), "\n")] = '\0';
+			(*buffer)[_strcspn((*buffer), "\n")] = '\0';
 			/*tokenizes buffer  with " " as delimiter*/
 			*token = strtok(*buffer, " ");
-			while(*token != NULL && strcmp(*token, "#") != 0)
+			while(*token != NULL && _strcmp(*token, "#") != 0)
 			{
 				/*appends each token to linked list*/
 				append(head, *token);
@@ -155,7 +155,7 @@ void _non_interactive(Node **head, char **buffer, char **token, size_t *no_read,
 		_whitespace(buffer);
 
 		/*replaces "\n" in buffer with "\0"*/
-		(*buffer)[strcspn(*buffer, "\n")] = '\0';
+		(*buffer)[_strcspn(*buffer, "\n")] = '\0';
 		/*tokenizes buffer  with " " as delimiter*/
 		*token = strtok(*buffer, " ");
 		while (*token != NULL)

@@ -15,12 +15,12 @@ char *_getenv(char *name)
 	while (*env != NULL)
 	{
 		entry = *env;
-		equals = strchr(entry, '=');
+		equals = _strchr(entry, '=');
 
 		if (equals != NULL)
 		{
 			len = equals - entry;
-			if (strncmp(entry, name, len) == 0 && strlen(name) == len)
+			if (_strncmp(entry, name, len) == 0 && _strlen(name) == len)
 			{
 				return (equals + 1);
 			}
@@ -47,7 +47,7 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 	while (*envp != NULL)
 	{
 		env_var = *envp;
-		if (strncmp(env_var, name, name_len) == 0 && env_var[name_len] == '=')
+		if (_strncmp(env_var, name, name_len) == 0 && env_var[name_len] == '=')
 		{
 			if (!overwrite)
 			{
@@ -58,7 +58,7 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 				return (-1);
 			name = temp;
 			name[name_len] = '=';
-			strncpy(&name[name_len + 1], value, value_len);
+			_strncpy(&name[name_len + 1], value, value_len);
 			name[name_len + value_len + 1] = '\0';
 			*envp = name;
 			
@@ -72,7 +72,7 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 		
 	name = temp;
 	name[name_len] = '=';
-	strncpy(&name[name_len + 1], value, value_len);
+	_strncpy(&name[name_len + 1], value, value_len);
 	name[name_len + value_len + 1] = '\0';
 	 *envp = name;
 	 *(envp + 1) = NULL;
@@ -92,17 +92,17 @@ int check_command(char *commands[], char **program_name, int *count)
 	int i = 0;
 	int valid = 0;
 	/*creates a copy of the command name*/
-	char *temp = strdup(*program_name);
+	char *temp = _strdup(*program_name);
 	char *str = malloc(100);
 	/*converts count to string*/
-	char *num_str = itoa(*count, str);
+	char *num_str = _itoa(*count, str);
 	
 	
 	
 	/*checks command is available in commands and updates valid to 1*/
 	while (list[i] != NULL)
 	{
-		if (strcmp(list[i], commands[0]) == 0)
+		if (_strcmp(list[i], commands[0]) == 0)
 			valid = 1;
 		i++;
 	}
@@ -110,11 +110,11 @@ int check_command(char *commands[], char **program_name, int *count)
 	/*if command is not available*/
 	if (valid == 0)
 	{
-		write(STDERR_FILENO, temp, strlen(temp));
+		write(STDERR_FILENO, temp, _strlen(temp));
 		write(STDERR_FILENO, " : ", 3);
-		write(STDERR_FILENO, num_str, strlen(num_str));
+		write(STDERR_FILENO, num_str, _strlen(num_str));
 		write(STDERR_FILENO, ": ", 2);
-		write(STDERR_FILENO, commands[0], strlen(commands[0]));
+		write(STDERR_FILENO, commands[0], _strlen(commands[0]));
 		write(STDERR_FILENO, " :", 2);
 		write(STDERR_FILENO, " not found\n", 11);
 		
@@ -176,13 +176,3 @@ char *itoa(int num, char *str)
 
     	return (str);
 }	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	

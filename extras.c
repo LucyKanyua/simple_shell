@@ -17,15 +17,15 @@ int myexecve(char *commands[], int *count, char **program_name)
 	/*checks if first character of first item in commands array is '/'(is in-built comand) and copies the command to str */
 	if (commands[0][0] == '/')
 	{
-		strcpy(str, commands[0]);
+		_strcpy(str, commands[0]);
 	} 
 	/*concatenates first item of commands array with "/bin/" to make it executable */
 	else
 	{
 		/* copies "/bin/" to str */
-		strcpy(str, "/bin/");
+		_strcpy(str, "/bin/");
 		/* concats str with first item in commands */
-		strcat(str, commands[0]);
+		_strcat(str, commands[0]);
 	}
 	if (check_command(commands, program_name, count) == -1)
 	{
@@ -86,35 +86,35 @@ void _parser(Node **head, int *status, int *count, char **program_name)
 	if (*head != NULL)
 	{
 		/*checks if linked list has second a second node*/
-		if (strcmp((*head)->cmd, "echo") == 0 &&(*head)->next != NULL)
+		if (_strcmp((*head)->cmd, "echo") == 0 &&(*head)->next != NULL)
 		{
 			/*duplicates command in the second node to echo_cmd*/
-			echo_cmd = strdup((*head)->next->cmd);
+			echo_cmd = _strdup((*head)->next->cmd);
 		}
 	
 		/*checks if command in the first Node is "exit" and calls myexit() to handle the command*/
-		if (strcmp((*head)->cmd, "exit") == 0)
+		if (_strcmp((*head)->cmd, "exit") == 0)
 		{
 			myexit(head);
 		}
 		/*checks if command in the first Node is "env" and calls print_env() to handle the command*/
-		else if (strcmp((*head)->cmd, "env") == 0)
+		else if (_strcmp((*head)->cmd, "env") == 0)
 		{
 			print_env();
 		}
 		/*checks if command in the first Node is "cd" and calls mycd() to handle the command*/ 
-		else if (strcmp((*head)->cmd, "cd") == 0)
+		else if (_strcmp((*head)->cmd, "cd") == 0)
 		{
 			mycd(head);
 		}
 		/*checks if command in the first Node is either "setenv" or "unsetenv" and calls myenv() to handle the command*/
-		else if (strcmp((*head)->cmd, "setenv") == 0 || strcmp((*head)->cmd, "unsetenv") == 0)
+		else if (_strcmp((*head)->cmd, "setenv") == 0 || _strcmp((*head)->cmd, "unsetenv") == 0)
 		{
 	
 			myenv(head);
 		}
 		/*checks if command in the first Node is "echo" AND second node is available with command that starts with "$" and 				calls var_replace() to 			handle the command*/
-		else if (strcmp((*head)->cmd, "echo") == 0 && echo_cmd != NULL && echo_cmd[0] == '$')
+		else if (_strcmp((*head)->cmd, "echo") == 0 && echo_cmd != NULL && echo_cmd[0] == '$')
 		{
 			var_replace(head, status);
 		}
@@ -148,7 +148,7 @@ void _parser(Node **head, int *status, int *count, char **program_name)
 void _mycd(char *temp[], int i, char **current_wd, char **current_dir, size_t dir_len)
 {
 	/*checks if the first item in temp[] is "cd"*/
-	if (strcmp(temp[0], "cd") == 0)
+	if (_strcmp(temp[0], "cd") == 0)
 	{
 		/*checks if temp[] has only one item which is "cd"*/
 		if (i == 1)
@@ -163,7 +163,7 @@ void _mycd(char *temp[], int i, char **current_wd, char **current_dir, size_t di
 			setenv("PWD", *current_wd, 1);
 		}
 		/*chacks if temp[] has two items and the second item is '-'*/
-		else if (i == 2 && strcmp(temp[1], "-") == 0)
+		else if (i == 2 && _strcmp(temp[1], "-") == 0)
 		{
 
 			/*changes directory to OLDPWD*/
@@ -220,10 +220,9 @@ void free_head(Node **head)
 void _whitespace(char **buffer)
 {
 	/*checks if whitespace is entered and frees buffer then exits with status 0*/
-	if (strspn(*buffer, " \t\n\r") == strlen(*buffer))
+	if (_strspn(*buffer, " \t\n\r") == _strlen(*buffer))
 	{
 		free(*buffer);
 		exit(0);
 	}
 }
-	

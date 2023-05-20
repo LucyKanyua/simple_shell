@@ -21,13 +21,13 @@ void _or(Node **head, int *status, int *count, char **program_name)
 	while (list != NULL)
 	{
 		/*if command in the current node is not "||" the command is duplicated to temp[]*/
-		if (strcmp(list->cmd, "||") != 0)
+		if (_strcmp(list->cmd, "||") != 0)
 		{
-			temp[i++] = strdup(list->cmd);
+			temp[i++] = _strdup(list->cmd);
 			temp[i] = NULL;
 		}
 		/*if command in the current node is "||" OR current node is the last node, commands in temp[] are executed */
-		if (strcmp(list->cmd, "||") == 0 || list->next == NULL)
+		if (_strcmp(list->cmd, "||") == 0 || list->next == NULL)
 		{
 			/*checks if status is not 0 (previous child proces was not successful)*/
 			if (*status != 0)
@@ -85,13 +85,13 @@ void _and(Node **head, int *status, int *count, char **program_name)
 	while (list != NULL)
 	{
 		/*if command in the current node is not "&&", the command is duplicated to temp[]*/
-		if (strcmp(list->cmd, "&&") != 0)
+		if (_strcmp(list->cmd, "&&") != 0)
 		{
 			temp[i++] = strdup(list->cmd);
 			temp[i] = NULL;
 		}
 		/*if command in the current node is "&&" OR current node is the last node, commands in temp[] are executed */
-		if (strcmp(list->cmd, "&&") == 0 || list->next == NULL)
+		if (_strcmp(list->cmd, "&&") == 0 || list->next == NULL)
 		{
 			/*checks if status is 0 (previous child proces was successful)*/
 			if (*status == 0)
@@ -143,12 +143,12 @@ void var_replace(Node **head, int *status)
 	char *str = NULL, *temp = NULL, *path = NULL;
 	
 	/*checks if command in second node is "$$" and prints pid*/
-	if (strcmp(list->cmd, "$$") == 0)
+	if (_strcmp(list->cmd, "$$") == 0)
 	{
 		printf("%d\n", getpid());
 	}
 	/*checks if command in second node is "$?" and prints status*/
-	else if (strcmp(list->cmd, "$?") == 0)
+	else if (_strcmp(list->cmd, "$?") == 0)
 	{
 		printf("%d\n", *status);
 	} 
@@ -156,9 +156,9 @@ void var_replace(Node **head, int *status)
 	else
 	{
 		/*duplicates the variable in second node to temp*/
-		temp = strdup(list->cmd);
+		temp = _strdup(list->cmd);
 		/*duplicates variable stored in temp to str excluding '$'*/
-		str = strndup(temp+1, strlen(temp)-1);
+		str = _strndup(temp+1, _strlen(temp)-1);
 		/*gets value of path stored in str and stores it to path*/
 		path = _getenv(str);
 		/*env not found empty line is printed*/
@@ -169,7 +169,7 @@ void var_replace(Node **head, int *status)
 		/*value of the path is printed folloewed by a new line*/
 		else
 		{
-			write(STDOUT_FILENO, path, strlen(path));
+			write(STDOUT_FILENO, path, _strlen(path));
 			write(STDOUT_FILENO, "\n", 1);
 		}
 
@@ -187,27 +187,3 @@ void var_replace(Node **head, int *status)
 		temp = NULL;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
