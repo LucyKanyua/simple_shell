@@ -9,24 +9,24 @@ char *check_operator(Node **head)
 {
 	/*creates reference to head of linked list*/
 	Node *temp = *head;
-	
+
 	/*iterates linked list untill there are no more nodes*/
 	while (temp != NULL)
 	{
 		/*checks if ";" is present in the node and returns ";" */
 		if (_strcmp(temp->cmd, ";") == 0)
 		{
-			return(";");
+			return (";");
 		}
 		/*checks if "||" is present in the node and returns "||" */
 		else if (_strcmp(temp->cmd, "||") == 0)
 		{
-			return("||");
+			return ("||");
 		}
 		/*checks if "&&" is present in the node and returns "&&" */
 		else if (_strcmp(temp->cmd, "&&") == 0)
 		{
-			return("&&");
+			return ("&&");
 		}
 		/* assigns temp to point to the next node */
 		temp = temp->next;
@@ -40,34 +40,36 @@ char *check_operator(Node **head)
 * @head: pointer to head of a linked list
 * @count: number of executions
 * @program_name: program_name
+* @status: return status of child process
+* @list: list of executables
 * Return: nothing
 */
-void command_alloc(Node **head, int *status, int *count, char **program_name)
+void command_alloc(Node **head, int *status,
+		int *count, char **program_name, char **list)
 {
 	/*assigns result of check_operator() to operator */
 	char *operator = check_operator(head);
 	*status = 10;
-	
+
 	/*operator is null default execute() is called*/
 	if (operator == NULL)
 	{
-		execute(head, status, count, program_name);
+		execute(head, status, count, program_name, list);
 
 	}
-	/*if operator is ';' _command_separator() is called to take care of the command */ 
 	else if (_strcmp(operator, ";") == 0)
 	{
-		_command_separator(head, status, count, program_name);
+		_command_separator(head, status, count, program_name, list);
 	}
-	/*if operator is "||" _or() is called to take care of the command*/ 
+	/*if operator is "||" _or() is called to take care of the command*/
 	else if (_strcmp(operator, "||") == 0)
 	{
-		_or(head, status, count, program_name);
+		_or(head, status, count, program_name, list);
 	}
-	/*if operator is "&&" _and() is called to take care of the command*/  
+	/*if operator is "&&" _and() is called to take care of the command*/
 	else if (_strcmp(operator, "&&") == 0)
 	{
-		_and(head, status, count, program_name);
+		_and(head, status, count, program_name, list);
 	}
 
 }
@@ -78,9 +80,11 @@ void command_alloc(Node **head, int *status, int *count, char **program_name)
 * @status: exit status of the previous program
 * @count: number of executions
 * @program_name: program_name
+* @list: list of executables
 * Return: nothing
 */
-void execute(Node **head, int *status, int *count, char **program_name)
+void execute(Node **head, int *status,
+		int *count, char **program_name, char **list)
 {
 
 	char *commands[10];
@@ -99,9 +103,8 @@ void execute(Node **head, int *status, int *count, char **program_name)
 	/*assigns last element of commands array to null*/
 	commands[i] = NULL;
 	i = 0;
-	
-	/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-	*status = myexecve(commands, count, program_name);
+
+	*status = myexecve(commands, count, program_name, list);
 }
 
 /**
@@ -109,10 +112,12 @@ void execute(Node **head, int *status, int *count, char **program_name)
 * @head: pointer to head of linked list
 * @status: exit status of previous process
 * @count: number of executions
+* @list: list of executables
 * @program_name: program_name
 * Return: void
 */
-void _command_separator(Node **head, int *status, int *count, char **program_name)
+void _command_separator(Node **head, int *status,
+		int *count, char **program_name, char **list)
 {
 	Node *temp = *head;
 	char *commands[10] = {NULL};
@@ -127,13 +132,12 @@ void _command_separator(Node **head, int *status, int *count, char **program_nam
 			/*checks if commands array is not empty*/
 			if (commands[0] != NULL)
 			{
-				/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-				*status = myexecve(commands, count, program_name);
+
+				*status = myexecve(commands, count, program_name, list);
 			}
 
 			i = 0;
-		} 
-		/*if current node does not have ';', the command in the current node is added to commands array*/
+		}
 		else
 		{
 			/*duplicated command in the current node to commands array*/
@@ -146,30 +150,31 @@ void _command_separator(Node **head, int *status, int *count, char **program_nam
 	/*checks if there is command in the aray that was left unexecuted*/
 	if (commands[0] != NULL)
 	{
-		/*calls myexecve() to execute commands in the commands array and assigns exit of the child process to status*/
-		*status = myexecve(commands, count, program_name);
+
+		*status = myexecve(commands, count, program_name, list);
 	}
 }
 /**
-* _exit - handles exit command
+* myexit - handles exit command
 * @head: pointer to head of a linked list
+* @list: list of executables
 * Return: void
 */
-void myexit(Node **head)
+void myexit(Node **head, char **list)
 {
 	/*assigns node status to point to second node of the linked list*/
 	Node *status = (*head)->next;
 	int exit_status = 0;
 	char exit_status_str[16];
-	
+
 	/*checks if linked list has only one node and exits with status 0*/
 	if ((*head)->next == NULL)
 	{
 		/*free linked list*/
 		free_head(head);
+		clean_list(list);
 		exit(0);
 	}
-	/*exits with status in command part of second node which is now pointed to by Node status*/
 	else
 	{
 		/*copies command in status node to exit_status_str*/
@@ -177,10 +182,11 @@ void myexit(Node **head)
 		/*terminates exit_status_str with '\0'*/
 		exit_status_str[_strlen(exit_status_str)] = '\0';
 		/*coverts exit_status_str to int*/
-		exit_status = _atoi(exit_status_str);
+		exit_status = atoi(exit_status_str);
 		/*free linked list*/
 		free_head(head);
 		/*exits with status stored in exit_status*/
+		clean_list(list);
 		exit(exit_status);
 	}
 }

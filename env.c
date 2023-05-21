@@ -10,43 +10,31 @@ void myenv(Node **head)
 	Node *list = *head;
 	char *temp[10];
 	int i = 0;
-	
-	/*iterates linked list adds commands in each node to temp[]*/
+
 	while (list != NULL)
 	{
 		temp[i++] = _strdup(list->cmd);
 		list = list->next;
 	}
-	/*sets last item of temp[] to null*/
 	temp[i] = NULL;
-	
-	/*checks if first item in temp[] is "setenv"*/
 	if (_strcmp(temp[0], "setenv") == 0)
 	{
-		/*checks if items in temp[] are not 3*/
 		if (i != 3)
 			write(STDERR_FILENO, "./hsh : setenv : invalid number of arguments", 44);
-		/*if items are 3 _setenv() is called to set environment*/
 		else
 		{
 			if (setenv(temp[1], temp[2], 1) != 0)
 				write(STDERR_FILENO, "./hsh : setenv : failed", 22);
-				
 		}
-
-	} 
-	/*checks if first item in temp[] is "unsetenv"*/
+	}
 	else if (_strcmp(temp[0], "unsetenv") == 0)
 	{
-		/*checks if items in temp[] are not 2*/
 		if (i != 2)
 			write(STDERR_FILENO, "./hsh : unsetenv : invalid number of arguments", 46);
-		/*if items are 2 _unsetenv() is called to unset environment*/
 		else
 			if (unsetenv(temp[1]) != 0)
 				write(STDERR_FILENO, "./hsh : usetenv : failed", 24);
 	}
-	/*free temp[]*/
 	i = 0;
 	while (temp[i] != NULL)
 	{
@@ -113,10 +101,10 @@ void mycd(Node **head)
 		/*current node points to next */
 		list = list->next;
 	}
-	
+
 	/*calls _mycd() to execute commands in temp[]*/
 	_mycd(temp, i, &current_wd, &current_dir, dir_len);
-	
+
 	/*frees current_wd if its not null*/
 	if (current_wd != NULL)
 	{
@@ -138,7 +126,7 @@ void mycd(Node **head)
 }
 
 /**
- * print_envp - prints environment content
+ * print_env - prints environment content
  * Return: nothing
  */
 void print_env(void)

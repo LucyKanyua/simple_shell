@@ -1,0 +1,26 @@
+pwd
+ls /var
+ls ; ls ; ls
+ls /po || ls /var || ls -a
+po || ls /var
+ll
+echo $$
+echo $?
+ls
+echo $$
+echo $?
+/bin/pwd
+cd
+pwd
+cd -
+pwd
+oo
+echo $?
+cd Projects/alx/simple_shell
+pwd
+cd x
+pwd
+cd -
+pwd
+             
+                

@@ -1,14 +1,12 @@
 #include "shell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 /**
  * _strcspn - returns the length of the initial segment of a string
  * @s1: string 1
  * @s2: string 2
  * Return: the length of the initial segment
  */
-size_t _strcspn(char *s1, char *s2)
+ssize_t _strcspn(char *s1, char *s2)
 {
 	size_t i, j;
 
@@ -71,7 +69,7 @@ char *_strncpy(char *dest, char *src, size_t n)
  * @c: char to search
  * Return: pointer to location or NULL
  */
-chr *_strchr(char *str, int c)
+char *_strchr(char *str, int c)
 {
 	while (*str != '\0')
 	{

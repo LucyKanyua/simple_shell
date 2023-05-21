@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * _getcwd - searches environment var in environ and returns pointer
+ * _getenv - searches environment var in environ and returns pointer
  * @name: name of the env
  * Return: pointer to the env value
  */
@@ -10,7 +10,7 @@ char *_getenv(char *name)
 	char **env = environ;
 	char *entry;
 	char *equals;
-	size_t len;
+	ssize_t len;
 
 	while (*env != NULL)
 	{
@@ -61,7 +61,6 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 			_strncpy(&name[name_len + 1], value, value_len);
 			name[name_len + value_len + 1] = '\0';
 			*envp = name;
-			
 			return (0);
 		}
 		envp++;
@@ -69,7 +68,7 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 	temp = (char *) malloc(name_len + value_len + 2);
 	if (!name)
 		return (-1);
-		
+
 	name = temp;
 	name[name_len] = '=';
 	_strncpy(&name[name_len + 1], value, value_len);
@@ -84,95 +83,76 @@ int _setenv(char *name, char *value, int overwrite) /*has bugs*/
 * @commands: commands to be checked
 * @program_name: program name
 * @count: number of executed commands
+* @list: list of executables
 * Return: 0 if command is valid otherwise -1
 */
-int check_command(char *commands[], char **program_name, int *count)
+int check_command(char *commands[],
+		char **program_name, int *count, char **list)
 {
-	char *list[] = {"ls", "/bin/ls", "/bin/pwd", "exit", "env", "setenv", "unsetenv", "cd", "echo", "pwd", NULL};
-	int i = 0;
-	int valid = 0;
-	/*creates a copy of the command name*/
-	char *temp = _strdup(*program_name);
-	char *str = malloc(100);
-	/*converts count to string*/
-	char *num_str = _itoa(*count, str);
-	
-	
-	
-	/*checks command is available in commands and updates valid to 1*/
+	char bin[10] = "/bin/";
+	char *_bin = NULL;
+	int valid = 0, i = 0, len = 0;
+
+
+
 	while (list[i] != NULL)
 	{
-		if (_strcmp(list[i], commands[0]) == 0)
+		if (commands[0][0] == '/' && strncmp(commands[0], bin, 5) == 0)
+		{
+			len = strlen(commands[0]);
+			_bin = strndup(commands[0] + 5, len - 4);
+		}
+		if (_strcmp(list[i], commands[0]) == 0 ||
+			(_bin != NULL && strcmp(list[i], _bin) == 0))
 			valid = 1;
 		i++;
+		if (_bin != NULL)
+			free(_bin);
 	}
 	i = 0;
-	/*if command is not available*/
-	if (valid == 0)
-	{
-		write(STDERR_FILENO, temp, _strlen(temp));
-		write(STDERR_FILENO, " : ", 3);
-		write(STDERR_FILENO, num_str, _strlen(num_str));
-		write(STDERR_FILENO, ": ", 2);
-		write(STDERR_FILENO, commands[0], _strlen(commands[0]));
-		write(STDERR_FILENO, " :", 2);
-		write(STDERR_FILENO, " not found\n", 11);
-		
-		if (temp != NULL)
-			free(temp);
-		if (str != NULL)
-			free(str);
 
+	return (print_error(valid, program_name, count, commands));
 
-		return (-1);
-
-	}
-
-
-	if (temp != NULL)
-		free(temp);
-	if (str != NULL)
-		free(str);
 	return (0);
 }
-	
+
 /**
 * itoa - converts int to string
 * @num:" int to be converted
 * @str: pointer to the converted value
 * Return: pointer to converted vakue
-*/	
+*/
 char *itoa(int num, char *str)
 {
 
 	int j, k, i = 0;
 	/*creates sign flag and assigns it to -1 if num < 0 or 1 if num > 0*/
-  	int sign = num < 0 ? -1 : 1;
-  	/*absolute value of num*/
-    	num = sign * num;
-    
-   
+	int sign = num < 0 ? -1 : 1;
+	/*absolute value of num*/
+	num = sign * num;
+
 	/*converts each digit to char and appends to str*/
-    	while (num > 0)
-    	{
-        	str[i++] = num % 10 + '0';
-        	num /= 10;
-   	}
+	while (num > 0)
+	{
+		str[i++] = num % 10 + '0';
+		num /= 10;
+	}
 	/*if num is negative '-' is appended at the end of the string*/
-    	if (sign == -1)
-    	{
-        	str[i++] = '-';
-    	}
+	if (sign == -1)
+	{
+		str[i++] = '-';
+	}
 	/*terminates str with null byte*/
-    	str[i] = '\0';
+	str[i] = '\0';
 
 	/*reverses the string*/
-    	for (j = 0, k = i - 1; j < k; j++, k--)
-    	{
-        	char temp = str[j];
-        	str[j] = str[k];
-        	str[k] = temp;
-    	}
+	for (j = 0, k = i - 1; j < k; j++, k--)
+	{
+		char temp = str[j];
 
-    	return (str);
-}	
+		str[j] = str[k];
+		str[k] = temp;
+	}
+
+	return (str);
+}
