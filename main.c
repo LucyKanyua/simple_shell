@@ -154,7 +154,6 @@ void _non_interactive(Node **head, char **buffer, char **token,
 		free(*buffer);
 		*buffer = NULL;
 	}
-	clean_list(list);
 }
 
 
