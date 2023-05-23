@@ -41,7 +41,7 @@ void clean_list(char **list)
 * @program_name: program name
 * @count: count
 * @commands: commands passed
-* Return: northing
+* Return: nothing
 */
 int print_error(int valid, char **program_name, int *count, char *commands[])
 {
@@ -101,4 +101,3 @@ void free_dptr(char **dptr)
 		dptr = NULL;
 	}
 }
-

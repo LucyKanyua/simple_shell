@@ -10,7 +10,7 @@ void _executables(char **list, char **path)
 {
 	char *dir;
 	char **dir_list = NULL;
-	size_t i = 0, count = 1, k = 0, j = 0, len = strlen(*path);
+	size_t i = 0, count = 1, k = 0, j = 0, len = _strlen(*path);
 	DIR *directory;
 	struct dirent *entry;
 
@@ -39,7 +39,7 @@ void _executables(char **list, char **path)
 		}
 		while ((entry = readdir(directory)) != NULL)
 		{
-			list[k++] = strdup(entry->d_name);
+			list[k++] = _strdup(entry->d_name);
 		}
 		if (closedir(directory) != 0)
 			perror("closedir");
