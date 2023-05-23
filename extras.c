@@ -16,11 +16,11 @@ int myexecve(char *commands[], int *count, char **program_name, char **list)
 	pid_t pid;
 
 	if (commands[0][0] == '/')
-		strcpy(str, commands[0]);
+		_strcpy(str, commands[0]);
 	else
 	{
-		strcpy(str, "/bin/");
-		strcat(str, commands[0]);
+		_strcpy(str, "/bin/");
+		_strcat(str, commands[0]);
 	}
 	if (check_command(commands, program_name, count, list) == -1)
 	{
