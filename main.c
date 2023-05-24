@@ -148,11 +148,6 @@ void _non_interactive(Node **head, char **buffer, char **token,
 		}
 		count++;
 	}
-	if (*no_read == n)
-	{
-		perror("getline");
-		return;
-	}
 	if (*buffer != NULL)
 	{
 		free(*buffer);
