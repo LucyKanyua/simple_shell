@@ -40,9 +40,11 @@ char *_strchr(char *str, int c);
 void append(Node **head, char *cmd);
 void free_list(Node **head);
 void _interactive(Node **head, char **buffer, char **token,
-		size_t *no_read, size_t *chars, char **program_name, char **list, char *path);
+		size_t *no_read, size_t *chars,
+			char **program_name, char **list, char *path);
 void _non_interactive(Node **head, char **buffer, char **token,
-		size_t *no_read, size_t *chars, char **program_name, char **list, char *path);
+		size_t *no_read, size_t *chars,
+			char **program_name, char **list, char *path);
 char *check_operator(Node **head);
 void command_alloc(Node **head, int *status,
 	int *count, char **program_name, char **path);
@@ -69,15 +71,18 @@ void _or(Node **head, int *status, int *count,
 void _and(Node **head, int *status, int *count,
 		char **program_name, char **path);
 void var_replace(Node **head, int *status, char *path);
-void _file(Node **head, char *filename, char **program_name, char **list, char *path);
-void execute_file(Node **head, int fd, char **program_name, char **list, char *path);
+void _file(Node **head, char *filename,
+		char **program_name, char **list, char *path);
+void execute_file(Node **head, int fd,
+		char **program_name, char **list, char *path);
 int check_command(char *commands[],
 		char **program_name, int *count, char **path);
 char *itoa(int num, char *str);
 void _myfree_list(char **commands);
 void _execute_file(Node **head, ssize_t *num_read,
 		char **buff, char **line, char **tokens, char **temp, int *fd,
-			int *status, int *count, char **token, char **program_name, char **list, char *path);
+			int *status, int *count, char **token,
+				char **program_name, char **list, char *path);
 void _executables(char **list, char **path);
 void clean_list(char **list);
 int print_error(int valid, char **program_name, int *count, char *commands[]);

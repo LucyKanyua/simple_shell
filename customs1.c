@@ -82,6 +82,12 @@ char *_strchr(char *str, int c)
 	return (NULL);
 }
 
+/**
+* free_token - frees array of tokens
+* @tokens: array
+* @count: number of items in array
+* Return: void
+*/
 void free_token(char **tokens, int count)
 {
 	int k = 0;

@@ -113,6 +113,7 @@ void _and(Node **head, int *status, int *count,
 * var_replace - handles variable replacement
 * @head: pointer to head of linked list containing commands
 * @status: exit status of previous child process
+* @path: path
 * Return: nothing
 */
 void var_replace(Node **head, int *status, char *path)
@@ -125,7 +126,7 @@ void var_replace(Node **head, int *status, char *path)
 	if (_strcmp(list->cmd, "$$") != 0 && _strcmp(list->cmd, "$?") != 0)
 	{
 		char *str = NULL;
-		
+
 		temp = _strdup(list->cmd);
 		str = strndup(temp + 1, _strlen(temp) - 1);
 		_path = _getenv(str);
@@ -143,5 +144,4 @@ void var_replace(Node **head, int *status, char *path)
 		free_item(str);
 	}
 	free_item(temp);
-	
 }

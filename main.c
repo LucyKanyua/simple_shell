@@ -61,6 +61,7 @@ void free_list(Node **head)
 * @token: pointer to token
 * @list: list of executables
 * @program_name: program_name
+* @path: path
 * Return: void
 */
 void _interactive(Node **head, char **buffer, char **token,
@@ -114,6 +115,7 @@ void _interactive(Node **head, char **buffer, char **token,
 * @token: pointer to token
 * @list: list of executables
 * @program_name: program  name
+* @path: path
 * Return: void
 */
 void _non_interactive(Node **head, char **buffer, char **token,
@@ -193,7 +195,8 @@ int main(int ac, char *av[])
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
-			_interactive(&head, &buffer, &token, &no_read, &chars, &program_name, list, path);
+			_interactive(&head, &buffer, &token, &no_read,
+					&chars, &program_name, list, path);
 		}
 		else
 		{

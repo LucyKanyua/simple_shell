@@ -6,12 +6,13 @@
 * @filename: filename
 * @program_name: program_name
 * @list: list of executables
+* @path: path
 * Return: nothing
 */
-void _file(Node **head, char *filename, char **program_name, char **list, char *path)
+void _file(Node **head, char *filename,
+		char **program_name, char **list, char *path)
 {
 	int fd;
-
 
 	/*checks if user has access permission*/
 	if (access(filename, R_OK) != 0)
@@ -46,15 +47,19 @@ void _file(Node **head, char *filename, char **program_name, char **list, char *
 * @head: pointer to linked list
 * @fd: fd
 * @program_name: program_name
+* @list: list of executables
+* @path: path
 * Return: void
 */
 
-void execute_file(Node **head, int fd, char **program_name, char **list, char *path)
+void execute_file(Node **head, int fd,
+		char **program_name, char **list, char *path)
 {
 	ssize_t num_read;
 	char *tokens[100] = {NULL};
-	int status = 0, i = 0, j= 0, count = 1;
-	char *line = NULL, *token = NULL, *temp = NULL, *buff = malloc(sizeof(char) * 1024);
+	int status = 0, i = 0, j = 0, count = 1;
+	char *line = NULL, *token = NULL;
+	char *temp = NULL, *buff = malloc(sizeof(char) * 1024);
 
 	malloc_error(buff);
 	while ((num_read = read(fd, buff, 1024)) > 0)

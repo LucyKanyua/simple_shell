@@ -1,5 +1,10 @@
 #include "shell.h"
 
+/**
+* print_pid - prints pid
+* @head: pointer to linked list
+* Return: nothing
+*/
 void print_pid(Node **head)
 {
 	Node *list = (*head)->next;
@@ -9,7 +14,7 @@ void print_pid(Node **head)
 	if (_strcmp(list->cmd, "$$") == 0)
 	{
 		char *pid_str = itoa(pid, str);
-		
+
 		write(STDOUT_FILENO, pid_str, _strlen(pid_str));
 		if (list->next != NULL)
 		{
@@ -29,6 +34,12 @@ void print_pid(Node **head)
 
 
 
+/**
+* print_status - prints status
+* @head: pointer to linked list
+* @status: status
+* Return: nothing
+*/
 void print_status(Node **head, int *status)
 {
 	Node *list = (*head)->next;
@@ -52,6 +63,11 @@ void print_status(Node **head, int *status)
 	}
 }
 
+/**
+* malloc_error - handles unsuccesful memory allocation
+* @buff: buffer
+* Return: void
+*/
 void malloc_error(char *buff)
 {
 	if (buff == NULL)
@@ -61,6 +77,12 @@ void malloc_error(char *buff)
 	}
 }
 
+
+/**
+* read_error - handles unsuccesful reading from stream
+* @num_read: return
+* Return: void
+*/
 void read_error(int num_read)
 {
 	if (num_read == -1)
@@ -70,6 +92,11 @@ void read_error(int num_read)
 	}
 }
 
+/**
+* free_commands - frees array
+* @commands: pointer to array
+* Return: nothing
+*/
 void free_commands(char **commands)
 {
 	int i;

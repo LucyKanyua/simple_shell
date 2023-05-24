@@ -57,6 +57,7 @@ int myexecve(char *commands[], int *count, char **program_name, char **list)
 * @program_name: program_name
 * @list: list of executables
 * @status: return status of child process
+* @path: path
 * Return: nothing
 */
 void _parser(Node **head, int *status,
