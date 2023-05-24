@@ -122,8 +122,7 @@ void _non_interactive(Node **head, char **buffer, char **token,
 	size_t *no_read, size_t *chars, char **program_name, char **list, char *path)
 {
 	size_t n = -1;
-	int status = 0;
-	int count = 1;
+	int status = 0, count = 1;
 
 	while (((*no_read) = getline(buffer, chars, stdin)) != n)
 	{
@@ -148,8 +147,11 @@ void _non_interactive(Node **head, char **buffer, char **token,
 			*token = NULL;
 		}
 		count++;
-
-
+	}
+	if (*no_read == n)
+	{
+		perror("getline");
+		return;
 	}
 	if (*buffer != NULL)
 	{
