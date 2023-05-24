@@ -10,10 +10,11 @@ void _myfree_list(char **commands)
 {
 	int i;
 
-	for (i = 0; i < 10 && commands[i] != NULL; i++)
+	while (commands[i] != NULL)
 	{
 		free(commands[i]);
 		commands[i] = NULL;
+		i++;
 	}
 }
 

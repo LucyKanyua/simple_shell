@@ -70,7 +70,7 @@ char *_strdup(char *src)
  * @src: string
  * Return: length of the string
  */
-int _strlen(char *src)
+size_t _strlen(char *src)
 {
 	int len = 0;
 

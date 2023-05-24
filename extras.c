@@ -16,15 +16,15 @@ int myexecve(char *commands[], int *count, char **program_name, char **list)
 	pid_t pid;
 
 	if (commands[0][0] == '/')
-		_strcpy(str, commands[0]);
+		strcpy(str, commands[0]);
 	else
 	{
-		_strcpy(str, "/bin/");
-		_strcat(str, commands[0]);
+		strcpy(str, "/bin/");
+		strcat(str, commands[0]);
 	}
 	if (check_command(commands, program_name, count, list) == -1)
 	{
-		_myfree_list(commands);
+		free_commands(commands);
 		status = 127;
 	} else
 	{
@@ -60,7 +60,7 @@ int myexecve(char *commands[], int *count, char **program_name, char **list)
 * Return: nothing
 */
 void _parser(Node **head, int *status,
-		int *count, char **program_name, char **list)
+		int *count, char **program_name, char **list, char *path)
 {
 	char *echo_cmd = NULL;
 
@@ -89,7 +89,7 @@ void _parser(Node **head, int *status,
 		else if (_strcmp((*head)->cmd, "echo") == 0
 				&& echo_cmd != NULL && echo_cmd[0] == '$')
 		{
-			var_replace(head, status);
+			var_replace(head, status, path);
 		}
 
 		else
@@ -176,7 +176,7 @@ void free_head(Node **head)
 void _whitespace(char **buffer)
 {
 	/*checks if whitespace is entered and frees buffer then exits with status 0*/
-	if (_strcspn(*buffer, " \t\n\r") == _strlen(*buffer))
+	if (strcspn(*buffer, " \t\n\r") == strlen(*buffer))
 	{
 		free(*buffer);
 		exit(0);

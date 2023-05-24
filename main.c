@@ -64,7 +64,7 @@ void free_list(Node **head)
 * Return: void
 */
 void _interactive(Node **head, char **buffer, char **token,
-		size_t *no_read, size_t *chars, char **program_name, char **list)
+		size_t *no_read, size_t *chars, char **program_name, char **list, char *path)
 {
 	size_t n = -1;
 	int status = 0;
@@ -91,7 +91,7 @@ void _interactive(Node **head, char **buffer, char **token,
 				free(*buffer);
 				*buffer = NULL;
 			}
-			_parser(head, &status, &count, program_name, list);
+			_parser(head, &status, &count, program_name, list, path);
 			write(STDOUT_FILENO, "$ ", 2);
 			free_head(head);
 
@@ -117,7 +117,7 @@ void _interactive(Node **head, char **buffer, char **token,
 * Return: void
 */
 void _non_interactive(Node **head, char **buffer, char **token,
-	size_t *no_read, size_t *chars, char **program_name, char **list)
+	size_t *no_read, size_t *chars, char **program_name, char **list, char *path)
 {
 	size_t n = -1;
 	int status = 0;
@@ -138,7 +138,7 @@ void _non_interactive(Node **head, char **buffer, char **token,
 			free(*buffer);
 			*buffer = NULL;
 		}
-		_parser(head, &status, &count, program_name, list);
+		_parser(head, &status, &count, program_name, list, path);
 		free_head(head);
 		if (*token != NULL)
 		{
@@ -167,13 +167,15 @@ int main(int ac, char *av[])
 {
 	size_t no_read = 0, chars = 0;
 	char *buffer = NULL;
-	char *token = NULL;
+	char *token = NULL, *path = _getenv("PATH");
 	Node *head = NULL;
-	char *path = _getenv("PATH");
+	char *_path = _strdup(path);
 	char *program_name = av[0];
 	char *list[5000] = {NULL};
 
-	_executables(list, &path);
+	_executables(list, &_path);
+	free(_path);
+
 	if (ac == 2)
 	{
 		struct stat file;
@@ -184,19 +186,19 @@ int main(int ac, char *av[])
 			exit(EXIT_FAILURE);
 		}
 		else
-			_file(&head, av[1], &program_name, &path);
+			_file(&head, av[1], &program_name, list, path);
 
 	}
 	else
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
-			_interactive(&head, &buffer, &token, &no_read, &chars, &program_name, list);
+			_interactive(&head, &buffer, &token, &no_read, &chars, &program_name, list, path);
 		}
 		else
 		{
 			_non_interactive(&head, &buffer,
-					&token, &no_read, &chars, &program_name, list);
+					&token, &no_read, &chars, &program_name, list, path);
 		}
 	}
 	clean_list(list);

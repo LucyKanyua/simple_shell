@@ -115,40 +115,33 @@ void _and(Node **head, int *status, int *count,
 * @status: exit status of previous child process
 * Return: nothing
 */
-void var_replace(Node **head, int *status)
+void var_replace(Node **head, int *status, char *path)
 {
 	Node *list = (*head)->next;
-	char *str = NULL, *temp = NULL, *path = NULL;
+	char *temp = NULL, *_path;
 
-	if (_strcmp(list->cmd, "$$") == 0)
+	print_pid(head);
+	print_status(head, status);
+	if (_strcmp(list->cmd, "$$") != 0 && _strcmp(list->cmd, "$?") != 0)
 	{
-		printf("%d", getpid());
-		if (list->next != NULL)
-			printf(" %s\n", list->next->cmd);
-		else
-			printf("\n");
-	}
-	else if (_strcmp(list->cmd, "$?") == 0)
-	{
-		printf("%d", *status);
-		if (list->next != NULL)
-			printf(" %s\n", list->next->cmd);
-		else
-			printf("\n");
-	}
-	else
-	{
+		char *str = NULL;
+		
 		temp = _strdup(list->cmd);
 		str = strndup(temp + 1, _strlen(temp) - 1);
-		path = _getenv(str);
-		if (!path)
+		_path = _getenv(str);
+		if (!_path)
 			write(STDOUT_FILENO, "\n", 1);
-		else
+		else if (_strcmp(str, "PATH") == 0)
 		{
 			write(STDOUT_FILENO, path, _strlen(path));
 			write(STDOUT_FILENO, "\n", 1);
+		} else
+		{
+			write(STDOUT_FILENO, _path, _strlen(_path));
+			write(STDOUT_FILENO, "\n", 1);
 		}
+		free_item(str);
 	}
 	free_item(temp);
-	free_item(str);
+	
 }

@@ -6,7 +6,7 @@
  * @s2: string 2
  * Return: the length of the initial segment
  */
-ssize_t _strcspn(char *s1, char *s2)
+size_t _strcspn(char *s1, char *s2)
 {
 	size_t i, j;
 
@@ -80,4 +80,15 @@ char *_strchr(char *str, int c)
 		str++;
 	}
 	return (NULL);
+}
+
+void free_token(char **tokens, int count)
+{
+	int k = 0;
+
+	for (k = 0; k < count && tokens[k] != NULL; k++)
+	{
+		free(tokens[k]);
+		tokens[k] = NULL;
+	}
 }

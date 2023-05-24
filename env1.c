@@ -10,7 +10,7 @@ char *_getenv(char *name)
 	char **env = environ;
 	char *entry;
 	char *equals;
-	ssize_t len;
+	size_t len;
 
 	while (*env != NULL)
 	{
@@ -118,7 +118,7 @@ int check_command(char *commands[],
 
 /**
 * itoa - converts int to string
-* @num:" int to be converted
+* @num: int to be converted
 * @str: pointer to the converted value
 * Return: pointer to converted vakue
 */
@@ -131,7 +131,10 @@ char *itoa(int num, char *str)
 	/*absolute value of num*/
 	num = sign * num;
 
-	/*converts each digit to char and appends to str*/
+	if (num == 0)
+	{
+		str[i++] = 0 + '0';
+	}
 	while (num > 0)
 	{
 		str[i++] = num % 10 + '0';

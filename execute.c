@@ -87,7 +87,7 @@ void execute(Node **head, int *status,
 		int *count, char **program_name, char **list)
 {
 
-	char *commands[10];
+	char *commands[10] = {NULL};
 	/*creates refrence to head*/
 	Node *temp = *head;
 	int i = 0;
